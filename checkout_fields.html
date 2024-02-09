@@ -1,0 +1,58 @@
+{% if checkout.requiredFields|length > 0 %}
+
+
+{% if "req_full_name" in checkout.requiredFields %}
+<div class="checkout__form">
+    <label>Full Name</label>
+    <input type="input" class="checkout__form--input" name="address_name">
+</div>
+{% endif %}
+{% if "req_email" in checkout.requiredFields %}
+<div class="checkout__form">
+    <label>Email Adresss</label>
+    <input type="input" class="checkout__form--input" name="email">
+</div>
+{% endif %}
+
+{% if "req_address" in checkout.requiredFields or "req_country_and_state" in checkout.requiredFields %}
+
+{% if "req_address" in checkout.requiredFields %}
+<div class="checkout__form">
+    <label>Address Line 1</label>
+    <input type="input" class="checkout__form--input" name="address_line_1">
+</div>
+<div class="checkout__form">
+    <label>Address Line 2</label>
+    <input type="input" class="checkout__form--input" name="address_line_2">
+</div>
+<div class="checkout__form">
+    <label>City</label>
+    <input type="input" class="checkout__form--input" name="address_city">
+</div>
+
+<div class="checkout__form">
+    <label>Zip Code</label>
+    <input type="input" class="checkout__form--input" name="address_zip">
+</div>
+{% endif %}
+
+{% if "req_address" in checkout.requiredFields or "req_country_and_state" in checkout.requiredFields %}
+
+<div class="country checkout__form">
+    <label>Country</label>
+    <select class="checkout__form--input" name="address_country">
+        <option value="">Select a country</option>
+        {% for country in checkout.countries %}
+        <option value="{{ country.id }}">{{ country.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="state checkout__form">
+    <label>State / Region</label>
+    <input type="input" class="checkout__form--input" name="address_state">
+</div>
+{% endif %}
+
+{% endif %}
+{% endif %}

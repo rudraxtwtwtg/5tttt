@@ -1,0 +1,27 @@
+{% set payment = module.payments | length %}
+{% set limit_payments = 5 - payment %}
+
+<div class="recent-payments triplezone-module">
+    <div class="triplezone-module__header">
+        <i class="mdi mdi-account-group"></i>
+        <p>{{ module.header }}</p>
+    </div>
+    <div class="payments-flex">
+        {% for payment in module.payments %}
+        <div class="payment-pr">
+            <div class="payment-tooltip">
+                <p>{{ payment.ign }}</p>
+                {% if module.displayPackage %}<p class="payment-item">{{ payment.name[:20] }}</p>{% endif %}
+            </div>
+            <img src="{{ payment.skin }}" width="64" alt="">
+        </div>
+        {% endfor %}
+        
+        {% if limit_payments > 0 %}
+            {% for i in 1..limit_payments %}
+                <div class="tea"></div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>

@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    function copy(txt) {
+        let cb = document.getElementById("cb");
+        cb.value = txt;
+        cb.style.display = 'block';
+        cb.select();
+        document.execCommand('copy');
+        cb.style.display = 'none';
+    }
+</script>
+
+<input id="cb" type="text" hidden>
+
+{% include 'topbar.twig' %}
+
+<div class="body--with-sidebar">
+    {% include 'sidebar.twig' %}
+    <main class="triplezone-main-content">
+
+        {% if category.description != "" %}
+        <div class="title-category">
+            <p class="category-title">{{ category.name }}</p>
+        </div>
+        <div class="description-category">
+            {{ category.description|raw }}
+        </div>
+        {% endif %}
+
+        {% if category.description == "" %}
+        <div class="title-category">
+            <p class="category-title">{{ category.name }}</p>
+        </div>
+        {% endif %}
+
+        {% if category.description == "" %}
+        <style>
+            .title-category {
+                padding-bottom: 0 !important;
+                border-radius: 5px 5px 0 0 !important;
+            }
+
+            .triplezone-body-description {
+                border-radius: 0 0 5px 5px !important;
+            }
+        </style>
+        {% endif %}
+
+        <div class="triplezone-body-description">
+
+            {% if category.packages|length > 0%}
+            {% if category.displayType == "list" %}
+            <div class="category__list">
+                {% for package in category.packages %}
+                <div class="category__list--item">
+                    <div class="category__list__item--title">
+                        <p>{{ package.name }}</p>
+                        {% if package.countdownEnds %}
+                        <span class="countdown__title"><i class="fa fa-clock-o"></i> <span class="countdown-to"
+                                data-countdown="{{ package.countdownEnds }}">{{ __("Ending Soon!") }}</span></span>
+                        {% endif %}
+                    </div>
+                    <div class="category__list__item--price">
+                        {% if package.customPrice == false and package.price > 0 %}
+                        {% if package.discount.applied %}
+                        <p><del>{{ package.discount.original|money }}</del></p>
+                        {% endif %}
+                        <p>{{ package.price|money }} <small>{{ basket.currency }}</small></p>
+                        {% elseif package.customPrice %}
+                        <p>Choose price</p>
+                        {% else %}
+                        <p>{{ theme_configuration.lang.item_is_free }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="category__list__item--buttons">
+                        <a href="javascript::void(0);" data-remote="/package/{{ package.id }}"
+                            class="btn btn-sm btn-block triplezone__toogle--modal info__btn"><i
+                                class="fa fa-info"></i></a>
+
+                        {% if package.basket %}
+                        <a href="/checkout/packages/remove/{{ package.id }}"
+                            class="btn btn-sm btn-danger btn-block remove__btn test-to-remove"><i
+                                class="mdi mdi-minus"></i> {{ theme_configuration.lang.remove_from_cart }} </a>
+                        {% else %}
+                        {% if package.type != "single" %}
+                        <a class="btn btn-sm btn-block buy__btn test-to-add"
+                            href="/checkout/packages/add/{{ package.id }}/subscribe"><i class="mdi mdi-plus-thick"></i>
+                            {{ __("Subscribe") }}</a>
+                        {% endif %}
+                        {% if package.type != "subscription" %}
+                        <a href="/checkout/packages/add/{{ package.id }}/single" class="btn btn-sm btn-block buy__btn test-to-add"><i class="mdi mdi-plus-thick"></i> {{ theme_configuration.lang.add_to_cart }}</a>
+                        {% endif %}
+                        {% endif %}
+
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+            {% else %}
+
+            <div class="category__list--with--images">
+                {% for package in category.packages %}
+                <div class="category__list--item">
+                    {% for gift in gift_packages %}
+                    {% if package.id == gift.id %}
+                        <div class="gift" data-gift="{{ gift.id }}" id="{{ gift.id }}-gift">
+                            <i class="mdi mdi-gift-outline"></i>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="category__list__item--title">
+                        <img href="javascript::void(0);" data-remote="/package/{{ package.id }}"
+                            src="{{ package.image.url }}"
+                            class="toggle-tooltip {% if package.image.borderless %}img-rounded{% else %}img-thumbnail{% endif %} triplezone__toogle--modal"
+                            title="{{ __(" Click for more details") }}" />
+                        {% if package.countdownEnds %}
+                        <span class="countdown__title"><i class="fa fa-clock-o"></i> <span class="countdown-to"
+                                data-countdown="{{ package.countdownEnds }}">{{ __("Ending Soon!") }}</span></span>
+                        {% endif %}
+                    </div>
+                    <div class="category__list__item--details">
+                        <p class='__item--title'>{{ package.name }}</p>
+                        <div class="__item__price--list">
+                            {% if package.customPrice == false and package.price > 0 %}
+                            {% if package.discount.applied %}
+                            <p class="__item--discount"><del>{{ package.discount.original|money }}</del></p>
+                            {% endif %}
+                            <p class="__item--price">{{ package.price|money }} <small>{{ basket.currency }}</small></p>
+                            {% elseif package.customPrice %}
+                            <p class="__item--price">Choose price</p>
+                            {% else %}
+                            <p class="__item--price">{{ theme_configuration.lang.item_is_free }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="category__list__item--buttons">
+                        <a href="javascript::void(0);" data-remote="/package/{{ package.id }}"
+                            class="btn btn-sm btn-block triplezone__toogle--modal info__btn"><i
+                                class="fa fa-info"></i></a>
+                        {% if package.basket %}
+                        <a href="/checkout/packages/remove/{{ package.id }}"
+                            class="btn btn-sm btn-danger btn-block remove__btn test-to-remove"><i
+                                class="mdi mdi-minus"></i> {{ theme_configuration.lang.remove_from_cart }}</a>
+                        {% else %}
+                        {% if package.type != "single" %}
+                        <a class="btn btn-sm btn-block buy__btn test-to-add"
+                            href="/checkout/packages/add/{{ package.id }}/subscribe"><i class="mdi mdi-plus-thick"></i>
+                            {{ __("Subscribe") }}</a>
+                        {% endif %}
+                        {% if package.type != "subscription" %}
+                        <a class="btn btn-sm btn-block buy__btn test-to-add"
+                            href="/checkout/packages/add/{{ package.id }}/single"><i class="mdi mdi-plus-thick"></i> {{ theme_configuration.lang.add_to_cart }}</a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor%}
+            </div>
+            {% endif %}
+            {% else %}
+            {{ __("No packages to display in this category.") }}
+            {% endif %}
+
+        </div>
+    </main>
+</div>
+
+{% if theme_configuration.giftPackageAddon.enabled %}
+<script>
+    try {
+        {% for gift in theme_configuration.giftPackageAddon.packages %}
+        document.getElementById("{{ gift.id }}-gift").addEventListener("click", function () {
+            copy('{{ gift.text }}');
+            iziToast.success({
+                title: 'Coupon copied!',
+                message: 'Apply the coupon to checkout to <br>receive the sale!',
+            });
+        });
+        {% endfor %}
+    }
+    catch(err) {
+      console.error("The ID's from packages are wrong!")
+    }
+</script>
+{% endif %}
+
+{% endblock %}

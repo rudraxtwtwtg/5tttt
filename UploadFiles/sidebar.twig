@@ -1,0 +1,37 @@
+    <aside class="triplezone-sidebar">
+        <div class="sidebar-header sidebar-round">
+            <p><i class="mdi mdi-close mobile-icon close-mobile"></i> <i class="mdi mdi-menu mobile-icon"></i>
+                {{ theme_configuration.lang.select_category }}</p>
+        </div>
+        <div class="sidebar-nav" id="toggle-mobile-nav">
+
+            <ul>
+                {% for category in store.categories %}
+                {% if category.subcategories|length > 0 %}
+                <li class="triplezone-toggle-dropdown {% if category.active %}active-dropdown{% endif %}" {% if theme_configuration.generalSettings.searchOnStoreWithoutLoggingIn == false %}{% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}{% endif %}>
+                    <a href="javascript:void(0);" class="dropdown-toggle {% if category.active %}link__active{% endif %}" id="l{{ category.id }}">{{ category.name }} <i
+                            class="mdi mdi-chevron-down carret"></i></a>
+                    <ul class="triplezone-dropdown">
+                        {% for subcategory in category.subcategories %}
+                        <li><a href="/category/{{ subcategory.id }}">{{ subcategory.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                <li class="{% if category.active %}active-dropdown{% endif %}" {% if theme_configuration.generalSettings.searchOnStoreWithoutLoggingIn == false %}{% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}{% endif %}>
+                    <a href="/category/{{ category.id }}" id="l{{ category.id }}" class="{% if category.active %}link__active{% endif %}">{{ category.name }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% for page in store.pages %}
+                <li class="{% if page.active %}active-dropdown{% endif %}" {% if theme_configuration.generalSettings.searchOnStoreWithoutLoggingIn == false %}{% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}{% endif %}>
+                    <a href="/{{ page.slug }}" id="l{{ page.slug }}" class="{% if page.active %}link__active{% endif %}">{{ page.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+            {% if config("category_navigation") == "topbar" %}
+            <div class="triplezone-modules">
+                {{ modules|raw }}
+            </div>
+            {% endif %}        
+    </aside>

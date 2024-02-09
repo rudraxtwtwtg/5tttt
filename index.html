@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% include 'topbar.twig' %}
+
+<div class="body--with-sidebar">
+    
+    {% include 'sidebar.twig' %}
+    
+    <main class="triplezone-main-content">
+        
+        {% if theme_configuration.featuredPackagesAddon.enabled %}
+        <div class="featured__packages">
+            <p class="featured__packages--title">{{ theme_configuration.lang.featured_packages_title }}</p>
+            <div class="featured__packages--flex">
+                {% for package in theme_configuration.featuredPackagesAddon.packages %}
+                        <div class="featured__package {% if basket.ign %}triplezone__toogle--modal{% endif%}" href="javascript::void(0);" data-remote="/package/{{ package.id }}" id="featured__{{ package.id }}" {% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}>
+                            <div class="featured__package--circle">
+                                <img src="{{ package.image }}">
+                            </div>
+                            <div class="featured__package--text">
+                                <p class="featured__package__text--title">{{ package.name }}</p>
+                                <p class="featured__package__text--price">{{ package.price }} {{ basket.currency }}</p>
+                            </div>
+                        </div>            
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="triplezone-body-description">
+            <div class="home-splash">
+                <div class="welcome-s">
+                    <p>{{ theme_configuration.lang.welcome_to_the_server }}</p>
+                    <p>{{ store.name }} {{ theme_configuration.lang.store_title }}</p>
+                </div>
+                <div class="splash__goal">
+                    <div class="splash__goal--body">
+                        <p class="goal__title">{{ theme_configuration.lang.monthly_goal }}</p>
+                        <p class="goal__progress">0%</p>
+                    </div>
+                    <div class="splash__goal--footer">
+                        <div class="splash__goal__footer--progress"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Welcome to the official {{ store.name }} Store. To begin shopping, please select a category from
+                the
+                sidebar. Please note that ranks cost a one-time fee and are unlocked permanently!</p>
+            <div class="body-obj">
+                <p class="title-of-subject support">
+                    Support
+                </p>
+                <p>Need any questions answered before checkout? Waited more than 20 minutes but your package
+                    still has not arrived? Ask the community/staff on Discord, or for payment support, submit a
+                    support ticket on our website.</p>
+                <a class="support-button" href="/status">
+                    Order History</a>
+                <a class="support-button" href="{{ config("discord_invite") }}">
+                    Discord Server</a>
+            </div>
+            <div class="body-obj">
+                <p class="title-of-subject refund">
+                    Refund policy
+                </p>
+                <div>
+                    <p>All payments are final and non-refundable.
+                        Attempting a chargeback or opening a PayPal dispute will result in <b>permanent</b> and
+                        irreversible <b>banishment</b> from all of our servers, and other minecraft stores.
+                        <br><br>
+                        It could take between 1-20 minutes for your purchase to be credited in-game. If you are
+                        still not credited after this time period, please open a support ticket on our forums
+                        with
+                        proof of purchase and we will look into your issue.</p>
+                </div>
+                <a class="terms-button triplezone__toogle--modal" data-remote="/terms" href="javascript;;">
+                    Terms and Conditions</a>
+                <a class="terms-button triplezone__toogle--modal" href="/tebex-privacy" data-remote="/tebex-privacy" onclick="if(showModal) { showModal(&quot;/tebex-privacy&quot;); return false; }">
+                    Privacy Policy</a>
+            </div>
+            {% if config("category_navigation") != "topbar" %}
+            <div class="triplezone-modules">
+                {{ modules|raw }}
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+</div>
+{% endblock %}

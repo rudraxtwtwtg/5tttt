@@ -1,0 +1,21 @@
+<div id="basket_items" style="display: none;">
+  {
+    "basket": {
+        "products": [
+        {% for package in basket.packages %}
+            {
+                "id": "{{ package.id }}",
+                "name": "{{ package.name }}",
+                "price": "{{ package.price|money }}",
+                "quantity": {{ package.quantity }}
+            }
+            {%- if not loop.last -%}
+            ,
+            {% endif %}
+        {% endfor %}                       
+        ],
+        "store_currency": "{{ basket.currency }}",
+        "total_basket": {{ basket.price|money }}
+    }
+}
+</div>

@@ -1,0 +1,27 @@
+{% if config("category_navigation") == "topbar" %}
+<div class="triplezone__second--nav">
+    <ul class="second__nav--list">
+        {% for category in store.categories %}
+        {% if category.subcategories|length > 0 %}
+        <li class="triplezone__second--toggle-dropdown list__second--nav {% if category.active %}active-dropdown{% endif %}" {% if theme_configuration.generalSettings.searchOnStoreWithoutLoggingIn == false %}{% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}{% endif %}>
+            <a href="javascript:void(0);" class="dropdown-toggle__second list__second__category--link" id="s{{ category.id }}">{{ category.name }} <i
+                    class="mdi mdi-chevron-down carret"></i></a>
+            <ul class="triplezone__second--dropdown">
+                {% for subcategory in category.subcategories %}
+                <li><a href="/category/{{ subcategory.id }}">{{ subcategory.name }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+        <li class="list__second--nav {% if category.active %}active-dropdown{% endif %}" {% if theme_configuration.generalSettings.searchOnStoreWithoutLoggingIn == false %}{% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}{% endif %}>
+            <a href="/category/{{ category.id }}" class="list__second__category--link" id="s{{ category.id }}">{{ category.name }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% for page in store.pages %}
+        <li class="list__second--nav {% if page.active %}active-dropdown{% endif %}" {% if theme_configuration.generalSettings.searchOnStoreWithoutLoggingIn == false %}{% if not basket.ign %}data-izimodal-open="#modal-login"{% endif %}{% endif %}>
+            <a href="/{{ page.slug }}" class="list__second__category--link" id="s{{ page.slug }}">{{ page.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

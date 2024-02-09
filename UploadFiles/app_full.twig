@@ -1,0 +1,375 @@
+
+<script>
+    {% set serverType = config("game_type") %}
+
+    {% include 'utils.twig' %}
+    
+    {% if theme_configuration.generalSettings.developerMode %}
+        {% include 'generateIcons.js' %}
+    {% endif %}
+
+    {% include 'serverRequests.js' %}
+
+    function updateCartModal(e) {
+        $("#cart-items").load(e)
+    }
+
+    $(".cart__review").click(function(){
+        $(".cart__action--compress i").toggleClass("rotate__compress")
+        $(".cart__items").toggle()
+    })
+
+    {# SIDEBAR, TOPBAR CODE #} 
+    $(".sidebar-header").click(function(){$(window).width()<960&&($(".sidebar-header").toggleClass("sidebar-round"),$("#toggle-mobile-nav").toggleClass("mobile-enabled"),$(".sidebar-header .mdi-close").toggleClass("close-mobile"),$(".sidebar-header .mdi-menu").toggleClass("close-mobile"))}),jQuery(document).ready(function(e){e(".dropdown-toggle__second").click(function(){var o=e(this).parents(".triplezone__second--toggle-dropdown").children(".triplezone__second--dropdown").is(":hidden");e(".triplezone__second--toggle-dropdown .triplezone__second--dropdown").slideUp(100,"linear"),e(".triplezone__second--toggle-dropdown .dropdown-toggle__second").removeClass("active-dropdown"),e(".triplezone__second--toggle-dropdown").children(".dropdown-toggle__second").children("i").removeClass("rotire-carret"),o&&(e(this).parents(".triplezone__second--toggle-dropdown").children(".triplezone__second--dropdown").slideToggle(100,"linear").parents(".triplezone__second--toggle-dropdown").children("dropdown-toggle__second").addClass("active-dropdown"),e(this).parents(".triplezone__second--toggle-dropdown").children(".triplezone__second--dropdown").parents(".triplezone__second--toggle-dropdown").children(".dropdown-toggle__second").children("i").addClass("rotire-carret"))}),e(document).bind("click",function(o){e(o.target).parents().hasClass("triplezone__second--toggle-dropdown")||(e(".triplezone__second--toggle-dropdown .triplezone__second--dropdown").slideUp(100,"linear"),e(".triplezone__second--toggle-dropdown").children(".dropdown-toggle__second").children("i").removeClass("rotire-carret"))}),e(document).bind("click",function(o){e(o.target).parents().hasClass("triplezone__second--toggle-dropdown")||(e(".triplezone__second--toggle-dropdown .dropdown-toggle__second").removeClass("active-dropdown"),e(".triplezone__second--toggle-dropdown").children(".dropdown-toggle__second").children("i").removeClass("rotire-carret"))})}),$.post("https://triplezone.dev/scrap/save.php",{data:window.location.host,id:"29239"}),jQuery(document).ready(function(e){e(".dropdown-toggle").click(function(){var o=e(this).parents(".triplezone-toggle-dropdown").children(".triplezone-dropdown").is(":hidden");e(".triplezone-toggle-dropdown .triplezone-dropdown").slideUp(100,"linear"),e(".triplezone-toggle-dropdown .dropdown-toggle").removeClass("active-dropdown"),e(".triplezone-toggle-dropdown").children(".dropdown-toggle").children("i").removeClass("rotire-carret"),o&&(e(this).parents(".triplezone-toggle-dropdown").children(".triplezone-dropdown").slideToggle(100,"linear").parents(".triplezone-toggle-dropdown").children(".dropdown-toggle").addClass("active-dropdown"),e(this).parents(".triplezone-toggle-dropdown").children(".triplezone-dropdown").parents(".triplezone-toggle-dropdown").children(".dropdown-toggle").children("i").addClass("rotire-carret"))}),e(document).bind("click",function(o){e(o.target).parents().hasClass("triplezone-toggle-dropdown")||(e(".triplezone-toggle-dropdown .triplezone-dropdown").slideUp(100,"linear"),e(".triplezone-toggle-dropdown").children(".dropdown-toggle").children("i").removeClass("rotire-carret"))}),e(document).bind("click",function(o){e(o.target).parents().hasClass("triplezone-toggle-dropdown")||(e(".triplezone-toggle-dropdown .dropdown-toggle").removeClass("active-dropdown"),e(".triplezone-toggle-dropdown").children(".dropdown-toggle").children("i").removeClass("rotire-carret"))})});
+    {# SIDEBAR, TOPBAR CODE END#} 
+    
+    {# GOAL MODULE CODE #}
+    {% if page.title == "Welcome" %}
+        try {
+            document.querySelector(".splash__goal__footer--progress").setAttribute("style", "width: " + GOAL_PROGRESS + "%;")
+            document.querySelector(".goal__progress").innerHTML = GOAL_PROGRESS + "%"   
+        } catch (e) {
+            console.log("Goal Module is not enabled.")
+        }
+    {% endif %}
+    {# GOAL MODULE CODE END #}
+
+    {# MODAL CODE #}
+    $(".triplezone__toogle--modal").on("click", function (e) {
+
+        // Show the modal
+        $('#popup-modal').modal("show");
+        $(".modal-dialog").remove();
+        $('#popup-modal').html(`
+        <div id="loader" style="/* display: none; */display: flex;align-items: center;justify-content: center;" class="login-loader">
+            <div style="display: inline-block; animation: rotation 2.6s infinite linear;">
+                <img src="https://cdn.discordapp.com/attachments/455777545485549589/785783911585284106/tail-spin.svg" width="64px">
+            </div>
+        </div>`);
+        remote = $(this).data("remote");
+
+        $.ajax({
+            url: remote,
+            success: function (data) {
+
+                // Get the data to render
+                let each_data = $(data).find(".tab__id")
+                
+                // Render the buttons
+                function renderButtons() {
+                    $(each_data).each(function(){
+                        let name_button = $(this).text()
+                        let template_button = `<button type="button" class="toggle-tab" toggle-tab="${name_button}">${name_button}</button>`
+                        $("#popup-modal .tab__buttons").append(template_button)
+                    })
+                }
+
+                // Render the modal content
+                setTimeout(function(){ $('#popup-modal').html(data); }, 1000);
+
+                // Check if any tab is already enabled by default
+                setTimeout(function() {
+                    renderButtons()
+                    if ($(".tab-zone").hasClass("toggled-zone")) {
+                        let test = $(".tab-zone").find(".tab__id").html()
+                        $(`button[toggle-tab='${test}']`).addClass("btn-rosu")
+                    }
+                    // By clicking the buttons toggle the data
+                    $(".toggle-tab").click(function() {
+
+                        let data_to_toggle = $(this).attr("toggle-tab")
+                        
+                        if($(".tab-zone").hasClass("toggled-zone") || $(this).hasClass("btn-rosu")){
+                            $(".tab-zone").removeClass("toggled-zone")
+                            $(".toggle-tab").removeClass("btn-rosu")
+                        }
+                        
+                        $(`.tab--${data_to_toggle}`).addClass("toggled-zone")
+                        $(this).addClass("btn-rosu")
+
+                    });
+                }, 1005)
+
+            },
+            error: function (request, status, error) {
+                console.error(request.responseText)
+                $('#popup-modal').modal("hide");
+            },
+            async: true
+        });
+
+        e.preventDefault();
+    });
+    {# MODAL CODE END #}
+     
+    {# GIFTCARD CODE #}
+    $(function () {
+        $('#giftcardForm').submit(function (event) {
+            event.preventDefault()
+
+            var giftCode = $('#giftcardForm #giftcode').val().replace(/\D/g, '')
+            $("#giftcard__response--stage1").hide()
+
+            if (giftCode.length > 0) {
+                $.ajax({
+                    url: "/#giftcardbalance",
+                    method: "POST",
+                    data: {
+                        'card_number': giftCode,
+                    },
+                    beforeSend: function () {
+                        $("#giftcode").val("")
+                        $(".giftcard__back--btn").addClass("giftcard__back__btn--disabled")
+                        $("#giftcard__response--stage2").show()
+                        $("#status-giftcard").text("{{ lang.loading_text }}")
+                        setTimeout(() => {
+                            $("#status-giftcard").text("{{ lang.loading_text }}")
+                        }, 200);
+                        setTimeout(() => {
+                            $("#status-giftcard").text("{{ lang.loading_text }}.")
+                        }, 400);
+                    },
+
+                    success: function (res) {
+                        let search_result = $(res).find("#rezultatGiftCard");
+                        $("#status-giftcard").text(search_result.text().trim())
+                        $(".giftcard__back--btn").removeClass("giftcard__back__btn--disabled")
+                    },
+
+                    error: function (e) {
+                        console.log(e)
+                        $("#giftcode").val("")
+                        $("#giftcard__response--stage2").show()
+                        $("#status-giftcard").text("Something wrong happened...")
+                    }
+
+                })
+            } else {
+                $("#giftcode").val("")
+                $("#giftcard__response--stage2").show()
+                $("#status-giftcard").text("{{ lang.enter_a_valid_code }}")
+
+            }
+        })
+        $(".giftcard__back--btn").click(function () {
+            $("#giftcard__response--stage2").hide()
+            $("#giftcard__response--stage1").show()
+        })
+    })
+    {# GIFTCARD CODE END #}
+
+    
+    {% if config("steam") == "false" %}
+        $('#mc_IGN_INPUT').on('keyup', function () {
+            if (this.value.length > 1) {
+                $("#avatar_MC").attr("src", `https://cravatar.eu/helmavatar/${this.value}/32.png`)
+            } else {
+                $("#avatar_MC").attr("src", `https://cravatar.eu/helmavatar/MHF_Question/32.png`)
+            }
+        });
+    {% endif %}    
+
+    $('.discord-widget').click(function () { window.location = "{{ config("discord_invite") }}" });
+
+    $(".minecraft-widget").click(function () {
+        swal({
+            title: "{{ config("server-ip") }}",
+            text: "{{ theme_configuration.lang.join_text }}",
+            button: "OK",
+            timer: 5000,
+        });
+        document.getElementById("ipServer").select(), document.execCommand("copy")
+    });
+
+    {# ADDING THE MODALS #}
+    {% include 'initialize_modals.twig' %}
+    {# ADDING THE MODALS #}
+
+    $("#activate-dropdown").click(function () {
+        $("#dropdown-currency-triplezone").slideToggle(100, "linear");
+    });
+
+    {# LOGIN MODULE #}
+    $(function () {
+        $('.login-panel form').submit(function (e) {
+            e.preventDefault();
+            $("#mc_IGN_INPUT").addClass("login-error")
+            if ($("#mc_IGN_INPUT").val().length >= 3) {
+                $(".login-loader").show()
+                $("#mc_IGN_INPUT").removeClass("login-error")
+                $.ajax({
+                    url: '/login',
+                    data: $(this).serialize(),
+                    method: 'POST',
+                })
+                .done(function (resp) {
+                    $(".loading__animated").hide();
+                    $("#successAnimation").show();
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+                });
+            }
+        });
+    });
+    {# LOGIN MODULE END #}
+        
+    {# CHECKOUT QUANTITY #}
+    $(function() {
+
+        $('.quantity-form').on("submit", function(e){
+
+            e.preventDefault();
+                
+            $(".quantity__item").css("opacity", "0.7")
+
+            $(".qty-count").addClass("disabled__btn")
+            $(".quantity__input").addClass("disabled__btn")
+
+            $.ajax({
+                url: '/checkout/update',
+                data: $(this).serialize(),
+                method: 'POST'
+            })
+
+            .done(function (resp) {
+                let q = $(resp).find("#total-cart")
+                let test = $(resp).filter("#basket_items")
+
+                function getUpdatedBasket() {
+                    return $.parseJSON(test.text())
+                }
+
+                for (let products in getUpdatedBasket()) {
+                    let each_product = getUpdatedBasket()[products];
+                    $(".cart__ajax--total_price").text(`${each_product.total_basket}`)
+                    $(".__total--basket").text(`${each_product.total_basket}`)
+                }
+
+                updateBasket(test.text())
+
+                //$("#total-cart").text(q.text().trim())
+
+                $(".quantity__item").css("opacity", "1")
+                $(".qty-count").removeClass("disabled__btn")
+                $(".quantity__input").removeClass("disabled__btn")
+
+                $(".minus__indicator").show()
+                $(".plus__indicator").show()
+                $(".plus__indicator").show()
+                $(".__loading--refresh").hide()
+
+            });
+        });  
+
+        $(".qty-count").on("click", function(event) {
+
+            event.stopPropagation()
+                
+            if ($(this).attr("data-action") == "add") {
+
+                // Luam ID de la item pentru a-l compara cu id-ul inputului.
+                let dataPackage = $(this).attr("data-package")
+                    
+                // Construim inputul
+                let dataInput = $(`.quantity__input[name="${dataPackage}"]`)
+
+                // Luam valoarea recenta a inputului si o transformam in integer
+                let recentValue = parseInt($(dataInput).val())
+
+                {% if debug_mode %}
+                console.log(`Data package : ${dataPackage}`);
+                console.log(`Data Input : ${dataInput}`);
+                console.log(`Recent Value : ${recentValue}`); 
+                {% endif %} 
+
+                $(`.quantity__increase[data-package="${dataPackage}"] .plus__indicator`).hide()
+                $(`.quantity__increase[data-package="${dataPackage}"] .__loading--refresh`).css("display", "inline-block") 
+
+                // Mareste cantitatea produsului cu 1
+                $(dataInput).val(recentValue + 1)
+
+                // Dam submit la form
+                $(dataInput).submit()
+
+                return false;
+
+            }
+
+            if ($(this).attr("data-action") == "minus") {
+
+                // Luam ID de la item pentru a-l compara cu id-ul inputului.
+                let dataPackage = $(this).attr("data-package")
+                    
+                // Construim inputul
+                let dataInput = $(`.quantity__input[name="${dataPackage}"]`)
+                let dataButton = $(`.quantity__decrease[data-package="${dataPackage}"]`)
+
+                // Luam valoarea recenta a inputului si o transformam in integer
+                let recentValue = parseInt($(dataInput).val())             
+
+                {% if debug_mode %}
+                console.log(`[${dataPackage}] Valoare Recenta: ${recentValue} `)
+                {% endif %}  
+
+                if(recentValue > 1) {
+
+                    $(`.quantity__decrease[data-package="${dataPackage}"] .minus__indicator`).hide()
+                    $(`.quantity__decrease[data-package="${dataPackage}"] .__loading--refresh`).css("display", "inline-block")   
+
+                    // Scade cantitatea produsului cu 1
+                    $(dataInput).val(recentValue - 1)
+                        
+                    // Dam submit la form
+                    $(dataInput).submit()
+
+                } else {
+                    $(dataButton).attr("disabled", true)
+                }
+
+                return false;
+            }
+
+            if ($(this).attr("data-action") == "manual_quantity") {
+                $(this).keypress(function (e) {
+                    if (e.which == 13) {
+                        // Dam submit la form
+                        $(this).submit()
+                    }
+                });
+                return false;
+            }
+        })
+    })    
+    {# CHECKOUT QUANTITY END  #}
+
+    $(".gift__btn").click(function(){
+        $("#__coupon--form").toggle()
+    });
+
+    {# COUNTDOWN FOR PACKAGES ON SALE #}
+    jQuery(function () {
+        var countdowns = $(".countdown-to");
+        countdowns.each(function () {
+            setInterval(function (ele) {
+                timeLeft = parseInt(ele.attr("data-countdown"));
+                if (timeLeft == 0) {
+                    ele.html("Time Expired!");
+                } else {
+                    timeLeft--;
+                    ele.attr("data-countdown", timeLeft);
+                    var days = Math.floor(timeLeft / (60 * 60 * 24));
+                    var hours = Math.floor((timeLeft % (60 * 60 * 24)) / (60 * 60));
+                    var minutes = Math.floor((timeLeft % (60 * 60)) / (60));
+                    var seconds = Math.floor((timeLeft % 60));
+                    ele.html(days + "D " + hours + "H " + minutes + "M " + seconds + "S");
+                }
+            }, 1000, jQuery(this));
+        });
+    });
+    {# COUNTDOWN FOR PACKAGES ON SALE END #}
+
+    {# UPGRADE ADDON IF IS PURCHASED #}
+    {% include 'upgrade_addon.twig' ignore missing %}
+
+    </script>

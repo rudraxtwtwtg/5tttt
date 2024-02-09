@@ -1,0 +1,74 @@
+<div class="header-splash"><div class="teata" style="height: 100%;width: 100%;background: linear-gradient(transparent 0,rgb(0 0 0 / 53%) 30%,#131b28 100%);"></div></div>
+<header class="triplezone-header">
+    {% if theme_configuration.generalSettings.christmasMode %}
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">❅</div><div class="snowflake">❅</div><div class="snowflake">❆</div><div class="snowflake">❄</div><div class="snowflake">❅</div><div class="snowflake">❆</div><div class="snowflake">❄</div><div class="snowflake">❅</div><div class="snowflake">❆</div><div class="snowflake">❄</div>
+    </div>
+    {% endif %}
+    <div class="triplezone-wrapper prioritate" id="29239">
+        <div class="top-bar">
+            {% if page.title == "Welcome" %}
+                {% if theme_configuration.forumsButton.enabled %}
+                    <a href="{{ theme_configuration.forumsButton.link }}" class="back-btn"><i class="mdi mdi-reply"></i> <span> {{ theme_configuration.forumsButton.name }}</span></a>
+                {% endif %}
+            {% else %}
+                <a href="/" class="back-btn"><i class="mdi mdi-reply"></i> <span> {{ theme_configuration.lang.home }}</span></a>
+            {% endif %}
+            <div class="profile-avatar"
+                data-izimodal-open="{% if basket.ign %}#modal{% else %}#modal-login{% endif %}">
+                <div class="profile-description">
+                    <p class="profile-title">{% if basket.ign %}{{basket.ign}}{{ theme_configuration.lang.player_cart }}{% else %}{{ theme_configuration.lang.guest }}{% endif %}</p>
+                    <p class="profile-description-text">
+                        {% if basket.ign %}
+                            {% if basket.packages|length >= 1 %}
+                                {{ basket.packages|length }} items | <span class="__total--basket">{{ basket.price|money }}</span> {{ basket.currency }}
+                            {%else%}
+                                {{ theme_configuration.lang.empty_cart }}
+                            {%endif%}
+                            {% else %}
+                            {{ theme_configuration.lang.click_to_login }}
+                        {%endif%}
+                    </p>
+                </div>
+                <div class="profile-head">
+                    {% if config("fivem") == "false" %}
+                    {% if config("steam") == "false" %}
+                        <img class="avatar-head" src="https://cravatar.eu/helmavatar/{% if basket.ign %}{{basket.ign}}{% else %}MHF_Question{% endif %}/32.png" alt="{{basket.ign}}'s Head">
+                    {% else %}
+                        <img class="avatar-head" src="{{ theme_configuration.steam.profileSteamIcon }}" alt="{{ basket.ign }}'s Head" width="32px">
+                    {% endif %}
+                    {% else %}
+                    <img class="avatar-head" src="https://cdn.discordapp.com/attachments/861150435321446409/870731011850399744/2eDeHHE.png" alt="{{ basket.ign }}'s Head" width="32px">
+                    {% endif %}
+                    {% if basket.ign %}
+                        <span class="placeholder-items">{{ _p(":count", basket.packages|length, {'count' : basket.packages|length, 'amount' : basket.price|money, 'currency' : basket.currency}) }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="triplezone-header-g">
+            <div class="widget minecraft-widget">
+                <div class="widget-icon"><span class="player-count">{{ theme_configuration.lang.loading_text }}</span>
+                    <i class="mdi mdi-{% if config("game_type") == "minecraft" %}minecraft{% endif %}{% if config("game_type") == "rust" %}radioactive{% endif %}{% if config("game_type") == "unturned" %}play-circle{% endif %}"></i>
+                </div>
+                <div class="description-widget">
+                    <p class="widget-title">{% if config("game_type") == "minecraft" %}{{ config("server-ip") }}{% else %}{{ theme_configuration.lang.play_now }}{% endif %}</p>
+                    <p class="widget-description">{{ theme_configuration.lang.click_to_copy }}</p>
+                </div>
+            </div>
+            <div class="header-logo">
+                <a href="/">
+                    <img src="{{ store.logo }}" alt="server logo" class="header-logo-image">
+                </a>
+            </div>
+            <div class="widget discord-widget">
+                <div class="description-widget">
+                    <p class="widget-title">Discord Server</p>
+                    <p class="widget-description">{{ theme_configuration.lang.click_to_join }}</p>
+                </div>
+                <div class="widget-icon"><span id="discord-count">{{ theme_configuration.lang.loading_text }}</span><i class="mdi mdi-discord"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

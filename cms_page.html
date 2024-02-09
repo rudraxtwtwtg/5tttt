@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% include 'topbar.twig' %}
+
+<div class="body--with-sidebar">
+    {% include 'sidebar.twig' %}
+    <main class="triplezone-main-content">
+        <div class="triplezone-body-description">
+            {{ page.metaData.content|raw }}
+        </div>
+    </main>
+</div>
+{% endblock %}

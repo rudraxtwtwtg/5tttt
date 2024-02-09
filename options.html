@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% include 'topbar.twig' %}
+
+<div class="body--with-sidebar">
+    {% include 'sidebar.twig' %}
+    <main class="triplezone-main-content">
+
+        <div class="title-category">
+            <p class="category-title">{{ options.package.name }}</p>
+        </div>
+
+        <div class="triplezone-body-description" style="border-radius: 0 0 5px 5px;">
+            <div class="variables __options--form">
+                <form method="post" id="options--form">
+
+                    {% if options.package.chooseServer %}
+                    <div class="form-group">
+                        <select class="__input--options" name="server">
+                            <option value="">{{ __("Please choose which server to receive this package upon") }}
+                            </option>
+                            {% for server in options.servers %}
+                            <option value="{{ server.id }}">{{ server.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+                    {% if options.package.customPrice %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="price" class="__input--options"
+                                placeholder="{{ __("Please enter an amount greater than " ~ options.package.price ~ " " ~ store.currency ~ " that you'd like to pay.") }}">
+                            <span class="input-group-addon"><small>{{ store.currency }}</small></span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% for variable in options.variables %}
+                    {% if variable.type == "dropdown" %}
+                    <div class="form-group">
+                        <select name="variables[{{ variable.id }}]" class="__input--options">
+                            <option value="">{{ variable.description }}</option>
+                            {% for option in variable.options %}
+                            <option value="{{ option.id }}">
+                                {{ option.name }}
+                                {% if option.price > 0 %}
+                                (+{{ option.price|money }} {{ basket.currency }})
+                                {% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% elseif variable.id == "discord_id" %}
+                    <p>{{ variable.description }}</p>
+
+                    <div class="form-group">
+                        <input type="text" class="__input--options" readonly
+                            value="{{ variable.value ? "Logged in as " ~ variable.discord_tag : "Not logged in" }}">
+                        <span class="input-group-append">
+                            <a href="https://ident.tebex.io/discord/?return={{ url() }}" id="login-with-discord"
+                                class="btn btn-info">Login with Discord</a>
+                        </span>
+                    </div>
+
+                    <input type="hidden" name="variables[{{ variable.id }}]" value="{{ variable.value }}" />
+                    <br />
+                    {% else %}
+                    <div class="form-group">
+                        <input type="text" name="variables[{{ variable.id }}]" class="__input--options"
+                            placeholder="{{ variable.description }}" />
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    <div class="__options--buttons">
+                        <div class="__options-btn">
+                            <a href="/category/{{ options.package.category }}"
+                                class="__back--btn-options">{{ __("Back") }}</a>
+                        </div>
+                        <div class="__options-btn">
+                            <input type="submit" value="{{ __("Continue") }}" name="submit"
+                                class="__continue--btn--options" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,34 @@
+<div class="giftcard__module triplezone-module">
+    <div class="triplezone-module__header">
+        <i class="mdi mdi-gift"></i>
+        <p>{{ module.header }}</p>
+    </div>
+    <div class="giftcard__module--body" id="giftcard__response--stage1">
+        <form id="giftcardForm" method="post" action="/#giftcardbalance">
+            {% if search %}
+            <div id="rezultatGiftCard">
+                {% if giftcard == false or giftcard.card_number == false %}
+                <p class='alert alert-danger'>{{ __("No card found") }}</p>
+                {% elseif giftcard.void == 1 %}
+                <p class='alert alert-warning'>{{ __("This gift card has been marked as void") }}</p>
+                {% else %}
+                <p><strong>{{ __("Card balance:") }} {{ giftcard.remaining_balance }}
+                        {{ store.currency }}</strong></p>
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="giftcard__buttons">
+                <input required type="text" name="" placeholder="Card Number" id="giftcode">
+                <button type="submit">Check</button>
+            </div>
+        </form>
+    </div>
+    <div class="giftcard__module--body" id="giftcard__response--stage2">
+        <div class="giftcard__buttons">
+            <div class="giftcard__response">
+                <p id="status-giftcard">{{ theme_configuration.lang.loading }}</p>
+            </div>
+            <button class="giftcard__back--btn"><span><i class="mdi mdi-reply"></i></span> Back</button>
+        </div>
+    </div>
+</div>

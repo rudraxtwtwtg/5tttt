@@ -1,0 +1,265 @@
+<!--
+   © TripleZone 2021
+   Discord TripleZone#8501
+-->
+
+{# ##################################################################################### #}
+{# ####                          Deluxe Tebex Configuration                         #### #}
+{# ####                    Copyright 2020-2021 SC RedCompany SRL                    #### #}
+{# ####                           Contact: TripleZone#8501                          #### #}
+{#                                      VERSION 3.4                                      #}
+{# ##################################################################################### #}
+
+{% set theme_configuration = {
+
+
+    generalSettings: {
+        
+        developerMode: false, 
+        
+        christmasMode: false,
+        
+        searchOnStoreWithoutLoggingIn: false,
+        
+        useMinifiedCss: true, 
+    },
+
+
+    forumsButton: {
+        enabled: true,
+        link: '/',
+        name: 'Forums'
+    }, 
+
+    steam: {
+        profileSteamIcon: "https://cdn.discordapp.com/attachments/455777545485549589/797904052289011744/rust_94773.png"
+    },
+
+    navigationIcons: {
+        icon_1858944: { 
+            sidebarId: "l1858944", 
+            topbarId: "s1858944", 
+            image: "https://i.imgur.com/gXPCyVX.png"
+        },
+            
+        icon_packages: { 
+            sidebarId: "lpackages", 
+            topbarId: "spackages", 
+            image: "https://i.imgur.com/gXPCyVX.png"
+        },
+            
+        icon_ranks: { 
+            sidebarId: "lranks", 
+            topbarId: "sranks", 
+            image: "https://i.imgur.com/gXPCyVX.png"
+        },
+            
+        icon_crates: { 
+            sidebarId: "lcrates", 
+            topbarId: "scrates", 
+            image: "https://i.imgur.com/gXPCyVX.png"
+        }            
+    },
+
+    giftPackageAddon: {
+        enabled: true,
+        packages: {
+            firstPackage:    { id: "4556370", text: "Coupon1"},
+        }
+    },
+
+    upgradePackageAddon: {
+        enabled: false,
+        upgradePrefix: ">>",
+        upgradeCategories: ['Ranks', 'Crates'],
+        upgradePackages: {
+            vip: { 
+                title: "Vip", 
+                image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/1de6fe6f08ce142005f7141c90ac7c707830b181.png", 
+                rank_to_upgrade: "4213822",
+                category: "Ranks"
+            },
+            example: { 
+                title: "Example Package", 
+                image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/1de6fe6f08ce142005f7141c90ac7c707830b181.png", 
+                rank_to_upgrade: "4213822",
+                category: "Crates"
+            }                  
+        }
+    },
+    
+    featuredPackagesAddon: {
+        enabled: false,
+        enabledOnPhone: true,
+        packages: {
+            first_package: { 
+                id: "4408089", 
+                image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/f7a34b0b88caebd32816be3f481c88f1a7591c79.png",
+                name: "10x Dang Key",
+                color: "#2196f3",
+                price: 49.99
+            },
+            second_package: { 
+                id: "4408173", 
+                image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/f7a34b0b88caebd32816be3f481c88f1a7591c79.png",
+                name: "10x Dang Key",
+                color: "#4caf50",
+                price: 49.99
+            },
+            third_package: { 
+                id: "4408172", 
+                image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/f7a34b0b88caebd32816be3f481c88f1a7591c79.png",
+                name: "10x Dang Key",
+                color: "#f44336",
+                price: 49.99
+            }            
+        }
+    },       
+
+    lang: {
+        select_category: 'Select a category',
+        loading_text: 'Loading..',
+        click_to_copy: 'click to copy',
+        click_to_join: 'click to join',
+        not_afflied: 'We are not affiliated with Mojang AB.',
+        all_rights_reserved: 'All Rights Reserved.',
+        home: 'Home',
+        empty_cart: 'empty cart',
+        click_to_login: 'Click to login',
+        guest: 'Guest',
+        player_cart: "'s Cart",
+        play_now: 'Play Now',
+        currency: 'Currency',
+        shopping_cart: 'Shopping Cart',
+        keep_adding_items: 'Keep adding items to cart and check back here to complete your purchase!',
+        proceed_to_checkout: 'Proceed to checkout',
+        free_basket: 'FREE',
+        logout: 'Logout',
+        join_text: 'We hope to see you online soon!',
+        enter_a_valid_code: 'enter a valid code!',
+        please_enter_your_username: 'Please enter your username to continue',
+        please_enter_your_username_description: "Usernames can't contain spaces, they can have any letter and number, and they are Case Sensitive.",
+        continue: 'Continue',
+        steam_click_to_login_in: 'Click to log in',
+        steam_login: 'Log in with your steam',
+        steam_aff: 'We are not affilied with Steam or Valve.',
+        add_to_cart: 'Add to cart',
+        remove_from_cart: 'Remove',
+        item_is_free: 'This item is free',
+        upgrade_your_package: 'Upgrade your package',
+        select_a_package_that_you_own: 'Select a package you already own and upgrade it!',
+        select_a_package_that_you_own_2: 'Select a package you own',
+        click_to_select: 'Click to select',
+        click_to_upgrade_your_package: 'Click to upgrade your package!',
+        select_the_package: 'Select the package that you own to see the upgrade.',
+        which_package_you_own: 'Which package do you own?',
+        welcome_to_the_server: 'Welcome to the official',
+        store_title: "Store",
+        featured_packages_title: 'Featured Packages',
+        click_to_logout: 'Click to logout',
+        shopping_as: 'Shopping as',
+        items_in_cart: 'items in cart',
+        have_a_coupon: 'Do you have a coupon?',
+        redeem_coupon: 'Redeem',
+        finalize_purchase: 'Finalize Purchase',
+        redirect_payment: 'You will be directed to our payment gateway to complete your purchase.',
+        payment_method: 'Payment method',
+        no_fee: 'No fee',
+        billing_details: 'Billing details',
+        monthly_goal: 'Monthly Goal'
+    }    
+
+
+} %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ store.name }} | {{ page.title }}</title>
+<link href="/templates/209/css/style.min.css" rel="stylesheet">
+{% if theme_configuration.generalSettings.useMinifiedCss %}
+<link href="{{ asset('style.min.css') }}" rel="stylesheet">
+{% else %}
+<link href="{{ asset('style.css') }}" rel="stylesheet">
+{% endif %}
+<link rel="shortcut icon" href="{{ store.favicon }}">
+
+{% include 'external_assets.twig' %}
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+
+    _gaq.push(['_setAccount', 'UA-36735942-3']);
+    _gaq.push(['_trackPageview']);
+
+    {% if store.googleAnalytics %}
+    _gaq.push(['b._setAccount', '{{ store.googleAnalytics }}']);
+    _gaq.push(['b._trackPageview']);
+    {% endif %}
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+<style>
+    {{ store.css|raw }}
+</style>
+
+{% include 'settings.twig' %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+</head>
+
+<body>
+
+{% include 'custom_basket.twig' %}
+
+{% include 'login_modal.twig' %}
+
+{% include 'api.twig' %}
+
+{% include 'header.twig' %}
+
+<div class="triplezone-wrapper">
+    <div class="notification">
+        {% if page.message.display %}
+        <div class="alert alert-{{ page.message.type}} alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ page.message.text }}
+        </div>
+        {% endif %}
+    </div>
+
+    {% block content %}{% endblock %}
+
+    {% if store.plan == "1" %}
+    <div class="advertisement">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px;"
+            data-ad-client="ca-pub-9830135219921132" data-ad-slot="7404819681"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    {% endif %}
+</div>
+
+{% include 'footer.twig' %}
+
+<div class="modal fade" id="popup-modal" tabindex="-1" role="dialog">
+</div>
+
+{% if page.category == "checkout" %}
+<script src="https://js.stripe.com/v2/"></script>
+{% endif %}
+
+{% include 'externals_scripts.twig' %}
+{% include 'app_full.twig' %}
+
+</body>
+
+</html>
